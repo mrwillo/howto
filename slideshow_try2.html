@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html ng-app="slideShowApp">
+<head>
+	<title>Slideshow with angular</title>
+</head>
+<style type="text/css">
+	.slideshow_container {
+		position: relative;
+		max-width: 1000px;
+		margin:auto;
+	}
+	.number {
+		color:#fff;
+		position: absolute;
+		top:0;
+		padding: 8px 12px;
+	}
+	.caption {
+		position: absolute;
+		bottom: 20px;
+		text-align: center;
+		color:#fff;
+		font-size: 15px;
+		font-weight: bold;
+		width: 100%;
+	}
+	.next,.prev {
+		color:#fff;
+		position: absolute;
+		top:50%;
+		font-size: 20px;
+		font-weight: bold;
+		margin-top:-20px;
+		padding: 8px 12px;
+		cursor: pointer;
+		border-radius: 0 5px 5px 0;
+	}
+	.next:hover, .prev:hover {
+		background-color: rgba(0,0,0,.8);
+	}
+	.next {
+		right:0;
+		padding: 8px 12px;
+		border-radius: 5px 0 0 5px;
+	}
+	.dot {
+		width: 12px;
+		height: 12px;
+		display: inline-block;
+		background-color: #bbb;
+		border-radius: 50%;
+		margin: 8px 2px;
+		cursor: pointer;
+	}
+	.dot:hover, .active {
+		background-color: #717171;
+	}
+	.fade {
+		animation-name: fade;
+		animation-duration: 2s;
+	}
+	@-webkit-keyframes fade {
+		from{opacity: .2}
+		to{opacity: 1}
+	}
+
+</style>
+<body ng-controller="slideShowController">
+	<div class="slideshow_container">
+		<div class="slideshow fade" ng-repeat="slide in slides" ng-if="slide.isShow">
+			<div class="number">{{$index+1}}/{{slides.length}}</div>
+			<img ng-src="{{slide.img}}">
+			<div class="caption">{{slide.caption}}</div>
+		</div>
+		<span class="next" ng-click="showSlide(currentIndex+1)">&#10095;</span>
+		<span class="prev" ng-click="showSlide(currentIndex-1)">&#10094;</span>
+	</div>
+	<div style="text-align: center;">
+		<span class="dot" ng-repeat="slide in slides" ng-class="{active:slide.isShow==true}" 
+		ng-click="showSlide($index)"></span>	
+	</div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+<script type="text/javascript">
+	angular.module("slideShowApp",[]).controller("slideShowController", function($scope){
+		$scope.slides = [
+		{img:"https://www.w3schools.com/howto/img_nature_wide.jpg", caption:"slide show 1", isShow:true},
+		{img:"https://www.w3schools.com/howto/img_nature_wide.jpg", caption:"slide show 2"},
+		{img:"https://www.w3schools.com/howto/img_nature_wide.jpg", caption:"slide show 3"},
+		{img:"https://www.w3schools.com/howto/img_nature_wide.jpg", caption:"slide show 4"},
+		{img:"https://www.w3schools.com/howto/img_nature_wide.jpg", caption:"slide show 5"},
+		{img:"https://www.w3schools.com/howto/img_nature_wide.jpg", caption:"slide show 6"},
+		{img:"https://www.w3schools.com/howto/img_nature_wide.jpg", caption:"slide show 7"},
+		{img:"https://www.w3schools.com/howto/img_nature_wide.jpg", caption:"slide show 8"},
+		]	
+		$scope.currentIndex = 0;
+		$scope.showSlide = function(index){
+			if(index>=$scope.slides.length-1) index=$scope.slides.length-1;
+			if (index < 0 ) index=0;
+			$scope.currentIndex = index;
+			$scope.slides.map(function(item){item.isShow=false;});
+			$scope.slides[index].isShow = true;
+		}
+	});
+</script>
+</html>
